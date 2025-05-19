@@ -5,7 +5,7 @@ export const metadata: Metadata = {
   title: 'Game Of Life',
   description: "Watch colorful patterns unfold in Conway's Game of Life, an interactive simulation of cellular automata.",
   icons: {
-    icon: '/Game-Of-Life/favicon.ico',
+    icon: '/Game-Of-Life/favicon.png',
   },
 }
 
