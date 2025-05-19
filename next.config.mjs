@@ -2,6 +2,7 @@
 const nextConfig = {
   output: 'export',
   basePath: '/Game-Of-Life',
+  assetPrefix: '/Game-Of-Life',
   eslint: {
     ignoreDuringBuilds: true,
   },
