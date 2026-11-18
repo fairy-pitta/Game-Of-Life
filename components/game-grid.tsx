@@ -26,6 +26,15 @@ export default function GameGrid({
   const canvasRef = useRef<HTMLCanvasElement>(null)
   const [hoveredCell, setHoveredCell] = useState<{ row: number; col: number } | null>(null)
   const [canvasSize, setCanvasSize] = useState({ width: 600, height: 600 })
+  // Bumped when the colour scheme flips, so token colours are re-read and redrawn.
+  const [scheme, setScheme] = useState(0)
+
+  useEffect(() => {
+    const media = window.matchMedia("(prefers-color-scheme: dark)")
+    const onChange = () => setScheme((n) => n + 1)
+    media.addEventListener("change", onChange)
+    return () => media.removeEventListener("change", onChange)
+  }, [])
 
   // キャンバスサイズを計算（正方形に固定）
   useEffect(() => {
@@ -52,8 +61,19 @@ export default function GameGrid({
     const ctx = canvas.getContext("2d")
     if (!ctx) return
 
+    // Canvas cannot read CSS variables, so resolve "var(--token)" colours first.
+    const styles = getComputedStyle(canvas)
+    const resolve = (color: string) => {
+      const match = color.match(/^var\((--[\w-]+)\)$/)
+      return match ? styles.getPropertyValue(match[1]).trim() || color : color
+    }
+    const cellFill = resolve(cellColor)
+    const bgFill = resolve(bgColor)
+    const hoverFill = resolve(hoverColor)
+    const lineStroke = resolve(gridLineColor)
+
     // キャンバスをクリア
-    ctx.fillStyle = bgColor
+    ctx.fillStyle = bgFill
     ctx.fillRect(0, 0, canvas.width, canvas.height)
 
     // セルサイズを計算
@@ -62,7 +82,7 @@ export default function GameGrid({
 
     // グリッド線を描画（セルサイズが十分大きい場合のみ）
     if (cellWidth > 3) {
-      ctx.strokeStyle = gridLineColor
+      ctx.strokeStyle = lineStroke
       ctx.lineWidth = 0.5
 
       for (let i = 0; i <= gridSize; i++) {
@@ -84,7 +104,7 @@ export default function GameGrid({
     for (let i = 0; i < gridSize; i++) {
       for (let j = 0; j < gridSize; j++) {
         if (grid[i]?.[j]) {
-          ctx.fillStyle = cellColor
+          ctx.fillStyle = cellFill
           ctx.fillRect(j * cellWidth, i * cellHeight, cellWidth, cellHeight)
         }
       }
@@ -92,10 +112,10 @@ export default function GameGrid({
 
     // ホバー中のセルを描画
     if (hoveredCell && !grid[hoveredCell.row]?.[hoveredCell.col]) {
-      ctx.fillStyle = hoverColor
+      ctx.fillStyle = hoverFill
       ctx.fillRect(hoveredCell.col * cellWidth, hoveredCell.row * cellHeight, cellWidth, cellHeight)
     }
-  }, [grid, hoveredCell, gridSize, cellColor, bgColor, hoverColor, gridLineColor, canvasSize])
+  }, [grid, hoveredCell, gridSize, cellColor, bgColor, hoverColor, gridLineColor, canvasSize, scheme])
 
   // マウスイベントハンドラ
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>) => {
@@ -141,7 +161,9 @@ export default function GameGrid({
   }
 
   return (
-    <div className="relative border border-purple-300 rounded-xl shadow-lg overflow-hidden bg-white/80 backdrop-blur-sm p-4">
+    <div className="panel relative p-4">
+      {/* Square box so the measured height always matches the width. */}
+      <div className="mx-auto aspect-square w-full max-w-[600px]">
       <canvas
         ref={canvasRef}
         width={canvasSize.width}
@@ -149,9 +171,11 @@ export default function GameGrid({
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
         onClick={handleClick}
-        className="cursor-pointer mx-auto rounded-lg shadow-inner shadow-purple-200"
+        aria-label="Game of Life board. Click a cell to toggle it while the simulation is stopped."
+        className="mx-auto cursor-pointer rounded-[10px] outline outline-1 outline-[var(--line)]"
         style={{ display: "block", width: `${canvasSize.width}px`, height: `${canvasSize.height}px` }}
       />
+      </div>
     </div>
   )
 }

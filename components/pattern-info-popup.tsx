@@ -28,7 +28,7 @@ export default function PatternInfoPopup({ open, onClose, pattern }: PatternInfo
     return (
       <div className="flex justify-center my-4">
         <div
-          className="border border-purple-200 bg-white"
+          className="border border-[var(--line)] bg-[var(--card)]"
           style={{
             display: "grid",
             gridTemplateColumns: `repeat(${patternWidth}, ${cellSize}px)`,
@@ -42,7 +42,7 @@ export default function PatternInfoPopup({ open, onClose, pattern }: PatternInfo
                 style={{
                   width: `${cellSize}px`,
                   height: `${cellSize}px`,
-                  backgroundColor: cell ? "#8b5cf6" : "white",
+                  backgroundColor: cell ? "var(--fg)" : "var(--card)",
                 }}
               />
             )),
@@ -54,20 +54,20 @@ export default function PatternInfoPopup({ open, onClose, pattern }: PatternInfo
 
   return (
     <Dialog open={open} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md bg-white/95 border-purple-300 text-slate-800 backdrop-blur-md">
+      <DialogContent className="sm:max-w-md">
         <DialogHeader>
-          <DialogTitle className="text-purple-700">Pattern: {pattern.name}</DialogTitle>
-          <DialogDescription className="text-slate-600">{pattern.description}</DialogDescription>
+          <DialogTitle className="text-foreground">Pattern: {pattern.name}</DialogTitle>
+          <DialogDescription className="text-muted-foreground">{pattern.description}</DialogDescription>
           <DialogClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
             <X className="h-4 w-4" />
             <span className="sr-only">Close</span>
           </DialogClose>
         </DialogHeader>
-        <div className="space-y-4 py-2 text-sm text-slate-700">
+        <div className="space-y-4 py-2 text-sm text-muted-foreground">
           {renderPatternPreview()}
 
           <div>
-            <h3 className="font-medium text-purple-700 mb-1">Pattern Information</h3>
+            <h3 className="field-label mb-1.5">Pattern Information</h3>
             <p>
               {pattern.name === "Glider"
                 ? "The Glider is one of the most famous patterns in Conway's Game of Life. It's a small pattern that moves diagonally across the grid, shifting one cell diagonally every four generations."
@@ -92,9 +92,9 @@ export default function PatternInfoPopup({ open, onClose, pattern }: PatternInfo
           </div>
         </div>
         <div className="flex justify-end">
-          <Button variant="outline" onClick={onClose} className="border-purple-300 text-purple-700 hover:bg-purple-100">
+          <button type="button" onClick={onClose} className="action">
             Close
-          </Button>
+          </button>
         </div>
       </DialogContent>
     </Dialog>

@@ -1,8 +1,6 @@
 "use client"
 
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Label } from "@/components/ui/label"
-import { Palette } from "lucide-react"
+import { PopupButton } from "@/components/ui/popup-button"
 import { THEMES } from "@/lib/game-of-life-data"
 
 interface ThemeSelectorProps {
@@ -11,27 +9,26 @@ interface ThemeSelectorProps {
 }
 
 export default function ThemeSelector({ selectedTheme, handleThemeChange }: ThemeSelectorProps) {
+  const current = THEMES.find((theme) => theme.name === selectedTheme) || THEMES[0]
   return (
-    <div className="space-y-2">
-      <div className="flex items-center gap-2">
-        <Palette className="h-4 w-4 text-purple-500" />
-        <Label className="text-sm font-medium text-slate-700">Theme</Label>
-      </div>
-      <Select value={selectedTheme} onValueChange={handleThemeChange}>
-        <SelectTrigger className="w-full bg-white border-purple-200 text-slate-700">
-          <SelectValue placeholder="Select theme" />
-        </SelectTrigger>
-        <SelectContent className="bg-white border-purple-200 text-slate-700">
+    <li className="group-row">
+      <label className="group-label" htmlFor="theme-select">
+        Theme
+      </label>
+      <div className="group-control">
+        <span
+          className="h-3 w-3 flex-none rounded-full"
+          style={{ backgroundColor: current.cellColor }}
+          aria-hidden="true"
+        />
+        <PopupButton id="theme-select" value={selectedTheme} onChange={(e) => handleThemeChange(e.target.value)}>
           {THEMES.map((theme) => (
-            <SelectItem key={theme.name} value={theme.name} className="focus:bg-purple-100 focus:text-purple-800">
-              <div className="flex items-center gap-2">
-                <div className="w-4 h-4 rounded-full" style={{ backgroundColor: theme.cellColor }} />
-                {theme.name}
-              </div>
-            </SelectItem>
+            <option key={theme.name} value={theme.name}>
+              {theme.name}
+            </option>
           ))}
-        </SelectContent>
-      </Select>
-    </div>
+        </PopupButton>
+      </div>
+    </li>
   )
 }

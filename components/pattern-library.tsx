@@ -96,7 +96,7 @@ export default function PatternLibrary({ patterns, placePatternAt, cellSize, cel
     return (
       <div className="flex flex-col items-center">
         <div
-          className="border border-slate-300 bg-white cursor-grab active:cursor-grabbing hover:border-purple-500 transition-colors mb-1"
+          className="border border-[var(--line)] bg-[var(--card)] cursor-grab active:cursor-grabbing hover:border-[var(--fg)] transition-colors mb-1"
           style={{
             display: "grid",
             gridTemplateColumns: `repeat(${patternWidth}, ${previewCellSize}px)`,
@@ -127,7 +127,7 @@ export default function PatternLibrary({ patterns, placePatternAt, cellSize, cel
     <Card>
       <CardHeader className="pb-3">
         <div className="flex items-center gap-2">
-          <LibraryIcon className="h-4 w-4 text-purple-500" />
+          <LibraryIcon className="h-4 w-4 text-faint" />
           <CardTitle>Pattern Library</CardTitle>
         </div>
         <CardDescription>Drag patterns to the grid</CardDescription>

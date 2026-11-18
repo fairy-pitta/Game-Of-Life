@@ -1,5 +1,9 @@
 import type { Config } from "tailwindcss";
 
+// Design tokens live as CSS variables in app/globals.css; color-mix keeps
+// Tailwind's opacity modifiers (bg-primary/90) working on them.
+const tok = (name: string) => `color-mix(in srgb, var(${name}) calc(<alpha-value> * 100%), transparent)`;
+
 const config: Config = {
     darkMode: ["class"],
     content: [
@@ -11,39 +15,23 @@ const config: Config = {
   theme: {
   	extend: {
   		colors: {
-  			background: 'hsl(var(--background))',
-  			foreground: 'hsl(var(--foreground))',
-  			card: {
-  				DEFAULT: 'hsl(var(--card))',
-  				foreground: 'hsl(var(--card-foreground))'
-  			},
-  			popover: {
-  				DEFAULT: 'hsl(var(--popover))',
-  				foreground: 'hsl(var(--popover-foreground))'
-  			},
-  			primary: {
-  				DEFAULT: 'hsl(var(--primary))',
-  				foreground: 'hsl(var(--primary-foreground))'
-  			},
-  			secondary: {
-  				DEFAULT: 'hsl(var(--secondary))',
-  				foreground: 'hsl(var(--secondary-foreground))'
-  			},
-  			muted: {
-  				DEFAULT: 'hsl(var(--muted))',
-  				foreground: 'hsl(var(--muted-foreground))'
-  			},
-  			accent: {
-  				DEFAULT: 'hsl(var(--accent))',
-  				foreground: 'hsl(var(--accent-foreground))'
-  			},
+  			background: tok('--bg'),
+  			foreground: tok('--fg'),
+  			card: { DEFAULT: tok('--card'), foreground: tok('--fg') },
+  			popover: { DEFAULT: tok('--card'), foreground: tok('--fg') },
+  			primary: { DEFAULT: tok('--fg'), foreground: tok('--bg') },
+  			secondary: { DEFAULT: tok('--code-bg'), foreground: tok('--fg') },
+  			muted: { DEFAULT: tok('--code-bg'), foreground: tok('--muted') },
+  			faint: tok('--faint'),
+  			accent: { DEFAULT: tok('--code-bg'), foreground: tok('--fg') },
+  			signal: tok('--accent'),
   			destructive: {
   				DEFAULT: 'hsl(var(--destructive))',
   				foreground: 'hsl(var(--destructive-foreground))'
   			},
-  			border: 'hsl(var(--border))',
-  			input: 'hsl(var(--input))',
-  			ring: 'hsl(var(--ring))',
+  			border: tok('--line'),
+  			input: tok('--field'),
+  			ring: tok('--accent'),
   			chart: {
   				'1': 'hsl(var(--chart-1))',
   				'2': 'hsl(var(--chart-2))',
@@ -61,6 +49,10 @@ const config: Config = {
   				border: 'hsl(var(--sidebar-border))',
   				ring: 'hsl(var(--sidebar-ring))'
   			}
+  		},
+  		fontFamily: {
+  			sans: ['var(--sans)'],
+  			mono: ['var(--mono)'],
   		},
   		borderRadius: {
   			lg: 'var(--radius)',

@@ -1,9 +1,6 @@
 "use client"
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
-import { Play, Pause, RotateCcw, Info, Zap } from "lucide-react"
+import { Play, Pause, RotateCcw, Info } from "lucide-react"
 import SpeedControl from "@/components/speed-control"
 import RuleSelector from "@/components/rule-selector"
 import PatternSelector from "@/components/pattern-selector"
@@ -58,73 +55,55 @@ export default function ControlPanel({
   setTorusMode,
 }: ControlPanelProps) {
   return (
-    <Card className="bg-white/80 border-purple-300 backdrop-blur-sm text-slate-800">
-      <CardHeader className="pb-3">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <Zap className="h-5 w-5 text-purple-500" />
-            <CardTitle className="text-purple-700">Controls</CardTitle>
-          </div>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={onInfoClick}
-            className="h-8 w-8 text-purple-500 hover:text-purple-700 hover:bg-purple-100"
-          >
+    <section className="panel overflow-hidden" aria-labelledby="controls-title">
+      <div className="flex items-start justify-between gap-3 px-4 pt-4">
+        <div>
+          <h2 id="controls-title" className="m-0 text-[1.05rem] font-semibold tracking-[-0.02em]">
+            Controls
+          </h2>
+          <p className="field-value m-0 mt-0.5">
+            {gridSize} × {gridSize} grid
+          </p>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className={`stamp ${running ? "stamp-live" : ""}`}>
+            <span className="stamp-dot" aria-hidden="true" />
+            {running ? "Running" : "Paused"}
+          </span>
+          <button type="button" onClick={onInfoClick} className="icon-button" aria-label="How to play">
             <Info className="h-4 w-4" />
-          </Button>
+          </button>
         </div>
-        <CardDescription className="text-slate-600">
-          Manage simulation settings ({gridSize}x{gridSize} grid)
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-4">
-        <div className="flex gap-2 justify-center">
-          <Button
-            onClick={() => setRunning(!running)}
-            variant={running ? "destructive" : "default"}
-            className={`flex items-center gap-2 w-32 ${running ? "bg-pink-500 hover:bg-pink-600" : "bg-purple-500 hover:bg-purple-600"}`}
-          >
-            {running ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-            {running ? "Stop" : "Start"}
-          </Button>
+      </div>
 
-          <Button
-            onClick={resetGrid}
-            variant="outline"
-            className="flex items-center gap-2 w-32 border-purple-300 text-purple-700 hover:bg-purple-100"
-          >
-            <RotateCcw className="h-4 w-4" />
-            Reset
-          </Button>
-        </div>
+      <div className="flex gap-2 px-4 pb-4 pt-4">
+        <button type="button" onClick={() => setRunning(!running)} className="action action-primary flex-1">
+          {running ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+          {running ? "Stop" : "Start"}
+        </button>
+        <button type="button" onClick={resetGrid} className="action flex-1">
+          <RotateCcw className="h-4 w-4" />
+          Reset
+        </button>
+      </div>
 
-        <Separator className="bg-purple-200" />
-
+      <h3 className="field-label border-t border-[var(--line)] px-4 pb-1 pt-4">Simulation</h3>
+      <ul className="group">
         <SpeedControl speed={speed} setSpeed={setSpeed} />
-
-        <Separator className="bg-purple-200" />
-
         <RuleSelector selectedRule={selectedRule} handleRuleChange={handleRuleChange} />
-
-        <Separator className="bg-purple-200" />
-
-        <PatternSelector selectedPattern={selectedPattern} handlePatternChange={handlePatternChange} />
-
-        {selectedPattern === "Random" && <DensityControl density={density} setDensity={setDensity} />}
-
-        <Separator className="bg-purple-200" />
-
-        <ThemeSelector selectedTheme={selectedTheme} handleThemeChange={handleThemeChange} />
-
-        <Separator className="bg-purple-200" />
-
         <TorusToggle torusMode={torusMode} setTorusMode={setTorusMode} />
+      </ul>
 
-        <Separator className="bg-purple-200" />
+      <h3 className="field-label border-t border-[var(--line)] px-4 pb-1 pt-4">Board</h3>
+      <ul className="group">
+        <PatternSelector selectedPattern={selectedPattern} handlePatternChange={handlePatternChange} />
+        {selectedPattern === "Random" && <DensityControl density={density} setDensity={setDensity} />}
+        <ThemeSelector selectedTheme={selectedTheme} handleThemeChange={handleThemeChange} />
+      </ul>
 
+      <div className="border-t border-[var(--line)] px-4 py-4">
         <GameStats generation={generation} livingCells={livingCells} />
-      </CardContent>
-    </Card>
+      </div>
+    </section>
   )
 }

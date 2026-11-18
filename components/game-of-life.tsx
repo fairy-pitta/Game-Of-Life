@@ -18,7 +18,7 @@ export default function GameOfLife() {
   const [speed, setSpeed] = useState(500) // Update speed in milliseconds
   const [selectedRule, setSelectedRule] = useState<string>("23/3")
   const [selectedPattern, setSelectedPattern] = useState<string>("Random")
-  const [selectedTheme, setSelectedTheme] = useState<string>("Pastel")
+  const [selectedTheme, setSelectedTheme] = useState<string>("Default")
   const [generation, setGeneration] = useState(0)
   const [density, setDensity] = useState(30) // Random pattern density (%)
   const [infoOpen, setInfoOpen] = useState(false)
@@ -133,8 +133,8 @@ export default function GameOfLife() {
 
   return (
     <div className="w-full max-w-full mx-auto">
-      <div className={`flex ${isDesktop ? "flex-row" : "flex-col"} gap-6`}>
-        <div className="flex-1 relative">
+      <div className={`flex ${isDesktop ? "flex-row items-start" : "flex-col"} gap-6`}>
+        <div className="flex-1 min-w-0 relative">
           <GameGrid
             grid={grid}
             toggleCellState={toggleCellState}

@@ -1,8 +1,6 @@
 "use client"
 
 import { Slider } from "@/components/ui/slider"
-import { Label } from "@/components/ui/label"
-import { Layers } from "lucide-react"
 
 interface DensityControlProps {
   density: number
@@ -11,12 +9,9 @@ interface DensityControlProps {
 
 export default function DensityControl({ density, setDensity }: DensityControlProps) {
   return (
-    <div className="space-y-2">
-      <div className="flex items-center gap-2">
-        <Layers className="h-4 w-4 text-purple-500" />
-        <Label className="text-sm font-medium text-slate-700">Density</Label>
-      </div>
-      <div className="flex items-center gap-4">
+    <li className="group-row">
+      <span className="group-label" id="density-label">Density</span>
+      <div className="group-control">
         <Slider
           value={[density]}
           min={10}
@@ -24,9 +19,10 @@ export default function DensityControl({ density, setDensity }: DensityControlPr
           step={5}
           onValueChange={(value) => setDensity(value[0])}
           className="flex-1"
+          aria-labelledby="density-label"
         />
-        <span className="text-sm w-12 text-right text-slate-700">{density}%</span>
+        <span className="field-value w-10 text-right">{density}%</span>
       </div>
-    </div>
+    </li>
   )
 }

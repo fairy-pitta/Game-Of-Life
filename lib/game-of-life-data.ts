@@ -72,11 +72,12 @@ export type Theme = {
 
 export const THEMES: Theme[] = [
   {
+    // Follows the site's design tokens, so it also follows light/dark mode.
     name: "Default",
-    cellColor: "#1e293b",
-    bgColor: "#ffffff",
-    hoverColor: "#f1f5f9",
-    gridLineColor: "#e2e8f0",
+    cellColor: "var(--fg)",
+    bgColor: "var(--card)",
+    hoverColor: "var(--code-bg)",
+    gridLineColor: "var(--line)",
   },
   {
     name: "Purple",

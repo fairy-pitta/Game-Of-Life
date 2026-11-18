@@ -1,8 +1,6 @@
 "use client"
 
 import { Slider } from "@/components/ui/slider"
-import { Label } from "@/components/ui/label"
-import { Gauge } from "lucide-react"
 
 interface SpeedControlProps {
   speed: number
@@ -11,12 +9,9 @@ interface SpeedControlProps {
 
 export default function SpeedControl({ speed, setSpeed }: SpeedControlProps) {
   return (
-    <div className="space-y-2">
-      <div className="flex items-center gap-2">
-        <Gauge className="h-4 w-4 text-purple-500" />
-        <Label className="text-sm font-medium text-slate-700">Speed</Label>
-      </div>
-      <div className="flex items-center gap-4">
+    <li className="group-row">
+      <span className="group-label" id="speed-label">Speed</span>
+      <div className="group-control">
         <Slider
           value={[1000 - speed]}
           min={100}
@@ -24,9 +19,10 @@ export default function SpeedControl({ speed, setSpeed }: SpeedControlProps) {
           step={100}
           onValueChange={(value) => setSpeed(1000 - value[0])}
           className="flex-1"
+          aria-labelledby="speed-label"
         />
-        <span className="text-sm w-12 text-right text-slate-700">{(1000 - speed) / 10}%</span>
+        <span className="field-value w-10 text-right">{(1000 - speed) / 10}%</span>
       </div>
-    </div>
+    </li>
   )
 }

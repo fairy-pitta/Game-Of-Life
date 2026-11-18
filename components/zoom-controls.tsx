@@ -28,7 +28,7 @@ export default function ZoomControls({ zoomLevel, onZoomChange }: ZoomControlsPr
   }
 
   return (
-    <div className="bg-white/90 backdrop-blur-sm rounded-lg shadow-lg p-2 flex items-center gap-2">
+    <div className="bg-[var(--card)] backdrop-blur-sm rounded-lg shadow-lg p-2 flex items-center gap-2">
       <Button variant="outline" size="icon" onClick={handleZoomOut} className="h-8 w-8">
         <ZoomOut className="h-4 w-4" />
       </Button>
